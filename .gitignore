@@ -1,0 +1,10 @@
+node_modules
+.next
+.omx
+out
+dist
+.env
+.env*.local
+npm-debug.log*
+*.tsbuildinfo
+.DS_Store
