@@ -43,7 +43,7 @@ export default function RootLayout({
             <Link href="/wiki#search">검색</Link>
           </nav>
           <p className="footer-note">
-            문서: <code>content/fuckyous</code> · 이미지: <code>public/images/fuckyous</code>
+            이 위키는 공격적 표현과 행동을 설명하기 위한 문서이며, 사용을 권장하기 위한 목적이 아닙니다.
           </p>
         </footer>
       </body>
