@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import type { WikiEntryMeta } from "@/lib/wiki";
 
@@ -59,6 +60,9 @@ export function WikiIndex({ entries, compact = false }: WikiIndexProps) {
       <div className="entry-grid">
         {filteredEntries.map((entry) => (
           <Link className="entry-card" href={`/wiki/${entry.slug}`} key={entry.slug}>
+            <span className="entry-thumb" aria-hidden="true">
+              <Image src={entry.thumbnail} alt="" fill sizes="96px" />
+            </span>
             <span className="entry-content">
               <span className="entry-category">{entry.category}</span>
               <strong>{entry.title}</strong>

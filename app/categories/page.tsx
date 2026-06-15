@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getAllEntries, getCategories } from "@/lib/wiki";
 
 export const metadata = {
@@ -26,8 +27,11 @@ export default function CategoriesPage() {
               <p>{categoryEntries.length}개 항목</p>
               <div className="category-links">
                 {categoryEntries.map((entry) => (
-                  <Link href={`/wiki/${entry.slug}`} key={entry.slug}>
-                    {entry.title}
+                  <Link className="category-entry-link" href={`/wiki/${entry.slug}`} key={entry.slug}>
+                    <span className="category-entry-thumb" aria-hidden="true">
+                      <Image src={entry.thumbnail} alt="" fill sizes="48px" />
+                    </span>
+                    <span>{entry.title}</span>
                   </Link>
                 ))}
               </div>
