@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -46,6 +47,7 @@ export default function RootLayout({
             이 위키는 공격적 표현과 행동을 설명하기 위한 문서이며, 사용을 권장하기 위한 목적이 아닙니다.
           </p>
         </footer>
+        <Analytics />
       </body>
     </html>
   );
