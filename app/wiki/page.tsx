@@ -5,8 +5,8 @@ export const metadata = {
   title: "항목 | Fuckyou Wiki"
 };
 
-export default function WikiPage() {
-  const entries = getAllEntries();
+export default async function WikiPage() {
+  const entries = await getAllEntries();
 
   return (
     <main className="page-shell">

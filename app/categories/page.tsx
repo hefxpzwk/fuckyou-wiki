@@ -6,8 +6,8 @@ export const metadata = {
   title: "분류 | Fuckyou Wiki"
 };
 
-export default function CategoriesPage() {
-  const entries = getAllEntries();
+export default async function CategoriesPage() {
+  const entries = await getAllEntries();
   const categories = getCategories(entries);
 
   return (

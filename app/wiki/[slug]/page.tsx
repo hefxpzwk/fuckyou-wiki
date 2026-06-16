@@ -10,15 +10,16 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return getAllEntries().map((entry) => ({
+export async function generateStaticParams() {
+  const entries = await getAllEntries();
+  return entries.map((entry) => ({
     slug: entry.slug
   }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const entry = getEntryBySlug(slug);
+  const entry = await getEntryBySlug(slug);
 
   if (!entry) {
     return {
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function EntryPage({ params }: Props) {
   const { slug } = await params;
-  const entry = getEntryBySlug(slug);
+  const entry = await getEntryBySlug(slug);
 
   if (!entry) {
     notFound();
@@ -75,21 +76,29 @@ export default async function EntryPage({ params }: Props) {
           <div className="article-meta" aria-label="항목 정보">
             <span>태그: {entry.tags.join(", ")}</span>
             <span>업데이트: {entry.updatedAt}</span>
+            {entry.contributors.length > 0 ? <span>기여: {entry.contributors.join(", ")}</span> : null}
           </div>
 
           <ReactMarkdown components={markdownComponents} remarkPlugins={[remarkGfm]}>{entry.content}</ReactMarkdown>
+
+          <section className="contribution-block" aria-labelledby="contribution-title">
+            <h2 id="contribution-title">기여</h2>
+            {entry.contributors.length > 0 ? (
+              <p>기여한 사람: {entry.contributors.join(", ")}</p>
+            ) : (
+              <p>아직 승인된 외부 기여자가 없습니다.</p>
+            )}
+            <Link className="primary-link fit-link" href={`/contribute/edit/${entry.slug}`}>
+              이 문서 수정 제안
+            </Link>
+          </section>
 
           {entry.related.length > 0 ? (
             <section className="related-block" aria-labelledby="related-title">
               <h2 id="related-title">관련 항목</h2>
               <div className="related-list">
                 {entry.related.map((relatedSlug) => {
-                  const related = getEntryBySlug(relatedSlug);
-                  return related ? (
-                    <Link key={related.slug} href={`/wiki/${related.slug}`}>
-                      {related.title}
-                    </Link>
-                  ) : null;
+                  return <RelatedLink key={relatedSlug} slug={relatedSlug} />;
                 })}
               </div>
             </section>
@@ -111,6 +120,12 @@ export default async function EntryPage({ params }: Props) {
       </div>
     </main>
   );
+}
+
+async function RelatedLink({ slug }: { slug: string }) {
+  const related = await getEntryBySlug(slug);
+
+  return related ? <Link href={`/wiki/${related.slug}`}>{related.title}</Link> : null;
 }
 
 function getHeadings(content: string) {
