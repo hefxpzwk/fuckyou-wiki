@@ -64,8 +64,14 @@ function normalizePrivateKey(value: string | undefined) {
     return undefined;
   }
 
-  return value
+  const normalized = value
+    .trim()
+    .replace(/^FIREBASE_PRIVATE_KEY=/, "")
     .trim()
     .replace(/^["']|["']$/g, "")
-    .replace(/\\n/g, "\n");
+    .replace(/\\r/g, "")
+    .replace(/\\n/g, "\n")
+    .replace(/\r\n/g, "\n");
+
+  return normalized;
 }
